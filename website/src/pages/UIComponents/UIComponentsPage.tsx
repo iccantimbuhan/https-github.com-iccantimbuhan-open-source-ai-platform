@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/MainLayout";
+import DocsLayout from "@/layouts/DocsLayout";
 
 import Container from "@/components/layout/Container";
 import Section from "@/components/layout/Section";
@@ -18,7 +18,7 @@ import AvatarExamples from "@/components/ui/Avatar/Avatar.examples";
 
 export default function UIComponentsPage() {
   return (
-    <MainLayout>
+    <DocsLayout>
       <Container>
         <Section>
           <div className="space-y-4">
@@ -26,7 +26,7 @@ export default function UIComponentsPage() {
               Components
             </span>
 
-            <h1 className="text-5xl font-bold tracking-tight">
+            <h1 className="text-5xl font-bold tracking-tight text-slate-900">
               UI Components
             </h1>
 
@@ -36,8 +36,8 @@ export default function UIComponentsPage() {
           </div>
         </Section>
 
-        {/* Button */}
         <ShowcaseSection
+          id="button"
           title="Button"
           description="Buttons trigger actions throughout the application."
         >
@@ -46,9 +46,7 @@ export default function UIComponentsPage() {
           </ComponentPreview>
 
           <ComponentExample title="Usage">
-            <ComponentCode
-              code={`<Button>Primary</Button>`}
-            />
+            <ComponentCode code={`<Button>Primary</Button>`} />
           </ComponentExample>
 
           <ComponentProps
@@ -69,8 +67,8 @@ export default function UIComponentsPage() {
           />
         </ShowcaseSection>
 
-        {/* Badge */}
         <ShowcaseSection
+          id="badge"
           title="Badge"
           description="Badges display status, labels, or categories."
         >
@@ -79,8 +77,8 @@ export default function UIComponentsPage() {
           </ComponentPreview>
         </ShowcaseSection>
 
-        {/* Input */}
         <ShowcaseSection
+          id="input"
           title="Input"
           description="Collect user input."
         >
@@ -89,8 +87,8 @@ export default function UIComponentsPage() {
           </ComponentPreview>
         </ShowcaseSection>
 
-        {/* Card */}
         <ShowcaseSection
+          id="card"
           title="Card"
           description="Composable content container."
         >
@@ -99,8 +97,8 @@ export default function UIComponentsPage() {
           </ComponentPreview>
         </ShowcaseSection>
 
-        {/* Alert */}
         <ShowcaseSection
+          id="alert"
           title="Alert"
           description="Displays contextual feedback."
         >
@@ -109,8 +107,8 @@ export default function UIComponentsPage() {
           </ComponentPreview>
         </ShowcaseSection>
 
-        {/* Avatar */}
         <ShowcaseSection
+          id="avatar"
           title="Avatar"
           description="Displays user profile images."
         >
@@ -119,6 +117,6 @@ export default function UIComponentsPage() {
           </ComponentPreview>
         </ShowcaseSection>
       </Container>
-    </MainLayout>
+    </DocsLayout>
   );
 }

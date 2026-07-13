@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/MainLayout";
+import DocsLayout from "@/layouts/DocsLayout";
 
 import Container from "@/components/layout/Container";
 import Section from "@/components/layout/Section";
@@ -12,11 +12,8 @@ import Icons from "@/components/foundations/Icons";
 
 export default function DesignSystemPage() {
   return (
-    <MainLayout>
+    <DocsLayout>
       <Container>
-        {/* ====================================================== */}
-        {/* Page Header */}
-        {/* ====================================================== */}
         <Section>
           <div className="space-y-6">
             <span className="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700">
@@ -28,56 +25,49 @@ export default function DesignSystemPage() {
             </h1>
 
             <p className="max-w-3xl text-lg leading-8 text-slate-600">
-              A living design system for the AI Engineering Handbook.
-              Every color, typography style, layout primitive, and reusable
-              component is documented here before being used throughout the
-              platform.
+              A living design system for the AI Engineering Handbook. Every
+              color, typography style, layout primitive, and reusable component
+              is documented here before being used throughout the platform.
             </p>
           </div>
         </Section>
 
-        {/* ====================================================== */}
-        {/* Typography */}
-        {/* ====================================================== */}
         <Section>
-          <Typography />
+          <div id="typography" className="scroll-mt-24">
+            <Typography />
+          </div>
         </Section>
 
-        {/* ====================================================== */}
-        {/* Colors */}
-        {/* ====================================================== */}
         <Section>
-          <Colors />
+          <div id="colors" className="scroll-mt-24">
+            <Colors />
+          </div>
         </Section>
 
-        {/* ====================================================== */}
-        {/* Spacing */}
-        {/* ====================================================== */}
         <Section>
-          <Spacing />
+          <div id="spacing" className="scroll-mt-24">
+            <Spacing />
+          </div>
         </Section>
 
-        {/* ====================================================== */}
-        {/* Shadows */}
-        {/* ====================================================== */}
         <Section>
-          <Shadows />
+          <div id="shadows" className="scroll-mt-24">
+            <Shadows />
+          </div>
         </Section>
 
-        {/* ====================================================== */}
-        {/* Border Radius */}
-        {/* ====================================================== */}
         <Section>
-          <Radius />
+          <div id="radius" className="scroll-mt-24">
+            <Radius />
+          </div>
         </Section>
 
-        {/* ====================================================== */}
-        {/* Icons */}
-        {/* ====================================================== */}
         <Section>
-          <Icons />
+          <div id="icons" className="scroll-mt-24">
+            <Icons />
+          </div>
         </Section>
       </Container>
-    </MainLayout>
+    </DocsLayout>
   );
 }

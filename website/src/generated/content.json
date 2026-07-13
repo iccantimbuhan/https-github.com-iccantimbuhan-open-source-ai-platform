@@ -1,0 +1,264 @@
+[
+  {
+    "metadata": {
+      "title": "AI Engineering Bootcamp",
+      "slug": "bootcamp-roadmap",
+      "type": "roadmap",
+      "order": 0,
+      "module": "Introduction",
+      "description": "Welcome to the AI Engineering Bootcamp. Learn the roadmap, technologies, learning methodology, and the portfolio project you'll build throughout the course.",
+      "difficulty": "Beginner",
+      "duration": "15 minutes",
+      "tags": [
+        "roadmap",
+        "introduction",
+        "ai engineering"
+      ],
+      "prerequisites": [],
+      "next": "ollama"
+    },
+    "content": "# AI Engineering Bootcamp\n\n**Author:** Ian Cantimbuhan\n\n**Version:** 1.0\n\n---\n\n# Welcome\n\nWelcome to my AI Engineering Bootcamp.\n\nThe purpose of this bootcamp is to learn how modern AI systems are built—from the fundamentals to deploying production-ready applications.\n\nThis is not just a collection of notes. It is my personal engineering handbook, portfolio, and learning journal.\n\nEvery lesson will help me understand not only how to use AI, but also how to build AI-powered applications using open-source technologies.\n\n---\n\n# Goals\n\nBy the end of this bootcamp I want to be able to:\n\n- Understand how Large Language Models (LLMs) work\n- Run open-source AI models locally\n- Build AI-powered web applications\n- Build Retrieval-Augmented Generation (RAG) systems\n- Build AI automation workflows\n- Deploy AI applications on Linux servers\n- Understand Docker and containers\n- Learn production-ready software engineering practices\n\n---\n\n# Technologies\n\nThis bootcamp will cover:\n\n## AI\n\n- Ollama\n- Llama\n- Qwen\n- DeepSeek\n- Mistral\n\n## Backend\n\n- Node.js\n- Express\n\n## Frontend\n\n- React\n- TypeScript\n\n## Database\n\n- PostgreSQL\n- pgvector\n\n## AI Concepts\n\n- Tokens\n- Parameters\n- Embeddings\n- Prompt Engineering\n- Vector Databases\n- RAG\n\n## DevOps\n\n- Docker\n- Docker Compose\n- Ubuntu Linux\n- Nginx\n- Git\n- GitHub\n\n---\n\n# Learning Method\n\nEvery lesson follows the same process.\n\n1. Learn the concept\n2. Understand why it exists\n3. Build a small lab\n4. Add the feature to the portfolio project\n5. Commit the changes to Git\n6. Write a reflection\n\n---\n\n# Portfolio Project\n\nThroughout this bootcamp I will build:\n\n**Open Source AI Platform**\n\nFeatures:\n\n- AI Chat\n- PDF Chat\n- CSV Analyzer\n- SMS Deliverability Assistant\n- Knowledge Base (RAG)\n- Authentication\n- PostgreSQL\n- Docker Deployment\n- Linux Deployment\n\n---\n\n# Repository Structure\n\nAI-Engineering-Bootcamp/\n\n- docs/\n- notes/\n- labs/\n- projects/\n- resources/\n\n---\n\n# My Promise\n\nI will focus on understanding every technology instead of memorizing commands.\n\nMy goal is to become an AI Engineer capable of designing, building, and deploying modern AI applications.",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/00-Bootcamp-Roadmap.md"
+  },
+  {
+    "metadata": {
+      "title": "Ollama",
+      "slug": "ollama",
+      "type": "lesson",
+      "order": 1,
+      "module": "Local AI",
+      "description": "Learn what Ollama is, why it exists, how it manages local AI models, and how applications communicate with it.",
+      "difficulty": "Beginner",
+      "duration": "20 minutes",
+      "tags": [
+        "ollama",
+        "local ai",
+        "runtime",
+        "llm"
+      ],
+      "prerequisites": [
+        "bootcamp-roadmap"
+      ],
+      "previous": "bootcamp-roadmap",
+      "next": "large-language-models"
+    },
+    "content": "\n# Lesson 01 – Ollama\n\n**Status:** In Progress\n\n---\n\n# Learning Objectives\n\nAfter completing this lesson, I should be able to:\n\n- Explain what Ollama is.\n- Explain why Ollama exists.\n- Explain the difference between Ollama and an AI model.\n- Understand how applications communicate with Ollama.\n- Explain how companies use Ollama.\n\n---\n\n# What is Ollama?\n\nOllama is an AI runtime that allows developers to run open-source Large Language Models (LLMs) on their own computer or server.\n\nThink of Ollama as the software responsible for loading, running, and serving AI models.\n\nOllama itself is **not** the AI.\n\nIt is the runtime that manages AI models.\n\n---\n\n# Why was Ollama created?\n\nBefore Ollama, running open-source AI models required a lot of manual setup.\n\nDevelopers had to:\n\n- Download model files\n- Configure inference engines\n- Configure GPU acceleration\n- Manage memory\n- Build their own API server\n\nOllama simplifies all of these tasks into a single application.\n\n---\n\n# Analogy\n\nNode.js runs JavaScript.\n\nDocker runs containers.\n\nOllama runs AI models.\n\n---\n\n# Ollama vs Llama\n\nOllama = Runtime\n\nLlama = AI Model\n\nRelationship:\n\nUser\n\n↓\n\nApplication\n\n↓\n\nOllama\n\n↓\n\nLlama\n\n↓\n\nResponse\n\n---\n\n# What happens when I type:\n\nollama run llama3.2\n\nInternally:\n\n1. Ollama finds the model.\n2. It loads the model into memory.\n3. It uses the GPU (Metal on Apple Silicon).\n4. It starts generating responses.\n5. After inactivity, it unloads the model from memory.\n\n---\n\n# API\n\nOllama exposes a local HTTP API.\n\nExample:\n\nhttp://localhost:11434\n\nApplications communicate with Ollama by sending HTTP requests.\n\nExactly like calling the OpenAI or Anthropic API.\n\nThe difference is that Ollama runs locally.\n\n---\n\n# Commands Learned\n\nollama list\n\nLists installed models.\n\n---\n\nollama ps\n\nShows loaded models.\n\n---\n\nollama run llama3.2\n\nLoads and runs a model.\n\n---\n\nollama show llama3.2\n\nDisplays detailed model information.\n\n---\n\n# Real-world Example\n\nImagine a company wants an AI assistant for internal documents.\n\nInstead of sending confidential data to a cloud AI provider:\n\nEmployee\n\n↓\n\nCompany Web App\n\n↓\n\nOllama\n\n↓\n\nQwen\n\n↓\n\nAnswer\n\nEverything stays inside the company's own infrastructure.\n\n---\n\n# Key Takeaways\n\n- Ollama is NOT the AI.\n- Ollama is the runtime.\n- Llama is the AI model.\n- Ollama exposes an HTTP API.\n- Applications communicate with Ollama using HTTP requests.\n\n---\n\n# Reflection\n\n(Write this after completing the lesson.)\n\nWhat was the biggest thing I learned today?",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/01-Ollama.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "# Lesson 02 – What is a Large Language Model (LLM)?\n\n**Module:** AI Fundamentals\n\n**Status:** Completed\n\n**Estimated Study Time:** 30–45 minutes\n\n---\n\n# Learning Objectives\n\nAfter completing this lesson, I should be able to:\n\n- Explain what a Large Language Model (LLM) is.\n- Explain why it is called \"Large.\"\n- Explain how an LLM learns.\n- Explain the difference between an LLM and a chatbot.\n- Explain why an LLM predicts language instead of memorizing answers.\n\n---\n\n# Connection to Previous Lesson\n\nIn Lesson 01, I learned that Ollama is responsible for running AI models on my computer.\n\nHowever, I still did not know what an AI model actually was.\n\nThis lesson explains what a Large Language Model (LLM) is and why it is considered the \"brain\" behind applications such as ChatGPT, Claude, Gemini, and Ollama.\n\n---\n\n# Why Are We Learning This?\n\nBefore building AI applications, I need to understand what is actually generating the responses.\n\nMany developers know how to install Ollama or call an API but cannot explain what an LLM actually is.\n\nUnderstanding LLMs is the foundation of AI Engineering.\n\nEverything that follows—tokens, parameters, embeddings, RAG, vector databases, and prompt engineering—depends on understanding this lesson.\n\n---\n\n# Definition\n\nA Large Language Model (LLM) is an Artificial Intelligence model trained on massive amounts of text so it can understand and generate human language.\n\nUnlike traditional software, an LLM is not programmed with fixed answers.\n\nInstead, it learns patterns, relationships, and structures from training data.\n\nBecause of this, it can generate completely new responses instead of simply retrieving stored answers.\n\n---\n\n# Why is it called a \"Large\" Language Model?\n\nThere are three reasons.\n\n## 1. Large Training Data\n\nThe model learns from enormous collections of books, websites, documentation, code, and many other text sources.\n\n---\n\n## 2. Large Number of Parameters\n\nModern LLMs contain billions of parameters.\n\nThese parameters store what the model has learned during training.\n\nExamples:\n\n- Llama 3.2 (3B)\n- Qwen 3\n- DeepSeek\n- GPT\n- Claude\n\n---\n\n## 3. Large Computing Power\n\nTraining an LLM requires enormous computing resources.\n\nCompanies often use thousands of GPUs running continuously for weeks or months.\n\n---\n\n# Mental Model\n\nThink of a newborn baby.\n\nA baby is born knowing nothing.\n\nOver time, the baby learns by listening, reading, observing, and practicing.\n\nEventually, the child can communicate naturally.\n\nAn LLM works similarly.\n\nInstead of learning from life experiences, it learns from enormous collections of text.\n\nIt gradually recognizes patterns in language.\n\n---\n\n# Architecture Diagram\n\n```text\n                 Human\n\n             Experience\n\n                  │\n\n                  ▼\n\n              Learning\n\n                  │\n\n                  ▼\n\n             Knowledge\n\n\n\n                  LLM\n\n            Training Data\n\n                  │\n\n                  ▼\n\n              Learning\n\n                  │\n\n                  ▼\n\n                Model\n```\n\n---\n\n# Deep Explanation\n\nImagine reading every public book, article, programming tutorial, and documentation you could find.\n\nEventually, you would begin noticing patterns.\n\nYou would understand grammar.\n\nYou would recognize common programming techniques.\n\nYou would learn how people answer questions.\n\nAn LLM does something similar.\n\nDuring training, it processes enormous amounts of text.\n\nInstead of memorizing every sentence, it learns statistical relationships between words.\n\nFor example:\n\nThe sky is blue.\n\nThe grass is green.\n\nThe sun is hot.\n\nAfter seeing millions of similar examples, the model begins recognizing patterns.\n\nLater, when asked a question, it uses those learned patterns to generate an answer.\n\nThis is why an LLM can answer questions it has never seen before.\n\n---\n\n# Traditional Software vs LLM\n\nTraditional Software\n\nInput\n\n↓\n\nProgram Rules\n\n↓\n\nOutput\n\nThe programmer writes every rule.\n\n---\n\nLarge Language Model\n\nTraining Data\n\n↓\n\nLearning\n\n↓\n\nModel\n\n↓\n\nPrediction\n\nThe model learns patterns instead of fixed rules.\n\n---\n\n# Real World Example\n\nSuppose a company wants employees to ask questions about internal documents.\n\nInstead of sending confidential documents to a cloud provider:\n\nEmployee\n\n↓\n\nCompany Portal\n\n↓\n\nOllama\n\n↓\n\nQwen\n\n↓\n\nAnswer\n\nEverything remains inside the company's own infrastructure.\n\nThis improves privacy and security.\n\n---\n\n# Engineer's Note\n\nDo not think of an LLM as a giant database of answers.\n\nInstead, think of it as a system that has learned relationships between words and ideas.\n\nThis mindset makes every future AI topic much easier to understand.\n\n---\n\n# Common Mistakes\n\n❌ Thinking the model memorizes every answer.\n\nReality:\n\nThe model predicts responses using learned patterns.\n\n---\n\n❌ Thinking Ollama is the AI.\n\nReality:\n\nOllama runs the AI.\n\nThe AI is the language model.\n\n---\n\n❌ Thinking ChatGPT is the model.\n\nReality:\n\nChatGPT is the application.\n\nGPT is the language model.\n\n---\n\n# Best Practices\n\n- Understand concepts before writing code.\n- Learn the difference between the runtime and the model.\n- Build a strong mental model before studying advanced topics.\n- Focus on understanding rather than memorizing definitions.\n\n---\n\n# Interview Questions\n\n## What is an LLM?\n\nAn LLM is an Artificial Intelligence model trained on enormous amounts of text to understand and generate human language.\n\n---\n\n## Why is it called \"Large\"?\n\nBecause it is trained using massive datasets, contains billions of parameters, and requires significant computing resources.\n\n---\n\n## Is an LLM the same as a chatbot?\n\nNo.\n\nThe chatbot is the application.\n\nThe LLM is the AI brain.\n\n---\n\n## Does an LLM memorize every answer?\n\nNo.\n\nIt learns patterns and predicts responses.\n\n---\n\n## Can an LLM think like a human?\n\nNo.\n\nIt has no consciousness or emotions.\n\nIt predicts the next most likely token based on what it learned during training.\n\n---\n\n# Knowledge Check\n\nWithout looking above, answer these questions.\n\n1. What is an LLM?\n\n2. Why is it called \"Large\"?\n\n3. What is the difference between Ollama and Llama?\n\n4. Why doesn't AI memorize answers?\n\n5. What is the difference between an LLM and a chatbot?\n\n---\n\n# Lab\n\n## Objective\n\nUnderstand what an LLM is before building applications with it.\n\n## Activity\n\nExplain to another person:\n\n- What an LLM is.\n- Why Ollama is not the AI.\n- Why an LLM learns patterns instead of memorizing answers.\n\nIf you can explain these concepts simply, you understand this lesson.\n\n---\n\n# Portfolio Connection\n\nUnderstanding LLMs allows me to choose the right model for future projects.\n\nThroughout this bootcamp I will use Llama, Qwen, and DeepSeek to build AI-powered applications.\n\n---\n\n# Key Takeaways\n\n- An LLM is the AI brain.\n- Ollama runs the AI model.\n- AI learns patterns instead of storing answers.\n- Training is different from using the model.\n- Understanding LLMs is the foundation of AI Engineering.\n\n---\n\n# Reflection\n\n## What was the biggest thing I learned today?\n\n(Write your answer.)\n\n---\n\n## What still confuses me?\n\n(Write your answer.)\n\n---\n\n## Git Commit\n\n```bash\ngit add .\ngit commit -m \"Lesson 02 - Understanding Large Language Models\"\n```",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/02-Large-Language-Models.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "# Lesson 03 – How AI Actually Learns\n\n**Module:** AI Fundamentals\n\n**Status:** Completed\n\n**Estimated Study Time:** 45–60 minutes\n\n---\n\n# Learning Objectives\n\nAfter completing this lesson, I should be able to:\n\n- Explain what AI training is.\n- Explain the difference between training and inference.\n- Explain what a dataset is.\n- Explain why GPUs are needed.\n- Explain why training takes weeks or months.\n- Explain why I do not train a model every time I use Ollama.\n\n---\n\n# Connection to Previous Lesson\n\nIn Lesson 02, I learned that a Large Language Model (LLM) is an AI model trained on massive amounts of text.\n\nThis lesson explains **how that training actually happens**.\n\nUnderstanding AI training helps me understand why models like Llama, Qwen, DeepSeek, and GPT become intelligent.\n\n---\n\n# Why Are We Learning This?\n\nMany people think AI is manually programmed with millions of rules.\n\nIt is not.\n\nInstead, AI learns from examples.\n\nUnderstanding the learning process is one of the biggest differences between an AI user and an AI engineer.\n\n---\n\n# Definition\n\nAI training is the process of teaching a model by exposing it to enormous amounts of data.\n\nDuring training, the model gradually discovers patterns, relationships, grammar, reasoning strategies, and programming concepts.\n\nThe result of training is a model that can generate responses to questions it has never seen before.\n\n---\n\n# The Two Phases of AI\n\nEvery LLM has two completely different phases.\n\n## Phase 1 – Training\n\nThe model is learning.\n\nExamples:\n\n- Reading books\n- Reading code\n- Reading documentation\n- Reading articles\n\nThe model is NOT answering users.\n\nIt is only learning.\n\n---\n\n## Phase 2 – Inference\n\nTraining is finished.\n\nNow the model answers users.\n\nExamples:\n\n- ChatGPT\n- Claude\n- Ollama\n- Open WebUI\n\nThis is called inference.\n\n---\n\n# Mental Model\n\nImagine a student studying for an exam.\n\nMonths before the exam:\n\nStudent\n\n↓\n\nReads books\n\n↓\n\nPractices\n\n↓\n\nLearns\n\nThis is training.\n\nNow imagine exam day.\n\nTeacher asks a question.\n\n↓\n\nStudent answers.\n\nThis is inference.\n\nThe student is no longer learning.\n\nThe student is using what was learned.\n\nAI works in exactly the same way.\n\n---\n\n# Architecture Diagram\n\n```text\n                    Books\n\n                    Code\n\n                  Websites\n\n                 Documentation\n\n                      │\n\n                      ▼\n\n                Training Dataset\n\n                      │\n\n                      ▼\n\n                AI Training Process\n\n                      │\n\n         Thousands of GPUs Working\n\n                      │\n\n                      ▼\n\n                Trained AI Model\n\n                      │\n\n                 Saved as GGUF\n\n                      │\n\n                      ▼\n\n                    Ollama\n\n                      │\n\n                      ▼\n\n                User Questions\n\n                      │\n\n                      ▼\n\n                  AI Response\n```\n\n---\n\n# What is a Dataset?\n\nA dataset is the collection of information used to teach an AI model.\n\nExamples include:\n\n- Books\n- Wikipedia\n- Programming code\n- Scientific papers\n- Documentation\n- Public websites\n\nThe larger and higher quality the dataset, the better the model can learn.\n\n---\n\n# Why Does Training Take So Long?\n\nImagine reading every programming book ever written.\n\nNow imagine memorizing the patterns from all of them.\n\nThat would take years.\n\nAI does something similar.\n\nModern language models process trillions of words.\n\nTraining often requires:\n\n- Thousands of GPUs\n- Weeks or months of computation\n- Massive amounts of electricity\n\n---\n\n# Why Are GPUs Used?\n\nTraining AI involves billions of mathematical calculations every second.\n\nGPUs are designed to perform many calculations at the same time.\n\nThis makes them much faster than normal CPUs for AI workloads.\n\n---\n\n# Training vs Using AI\n\nTraining\n\n↓\n\nModel learns\n\n↓\n\nWeeks or months\n\n↓\n\nVery expensive\n\n---\n\nInference\n\n↓\n\nModel answers questions\n\n↓\n\nMilliseconds or seconds\n\n↓\n\nMuch cheaper\n\nWhen I use Ollama on my Mac, I am performing inference.\n\nI am NOT training Llama.\n\n---\n\n# Real-World Example\n\nMeta trains Llama once.\n\nThe finished model is released.\n\nDevelopers around the world download it.\n\nInstead of training it again, they simply run the model using software such as Ollama.\n\nThis saves enormous amounts of time and money.\n\n---\n\n# Engineer's Note\n\nOne of the biggest beginner misunderstandings is thinking that ChatGPT or Ollama is \"learning from every conversation.\"\n\nThat is generally not how inference works.\n\nWhen I ask Ollama a question, it answers using the knowledge it learned during training.\n\nIt is not retraining itself every time I chat with it.\n\n---\n\n# Common Mistakes\n\n❌ Thinking Ollama trains the model.\n\nReality:\n\nOllama only runs the trained model.\n\n---\n\n❌ Thinking chatting improves the model.\n\nReality:\n\nInference and training are separate processes.\n\n---\n\n❌ Thinking every AI company trains its own models.\n\nReality:\n\nMany companies use existing open-source models like Llama, Qwen, or DeepSeek.\n\n---\n\n# Best Practices\n\n- Understand the difference between training and inference.\n- Choose an existing model unless you truly need to train your own.\n- Learn how models are trained before learning how to fine-tune them.\n\n---\n\n# Vocabulary\n\n## Training\n\nTeaching an AI model using large datasets.\n\n---\n\n## Inference\n\nUsing a trained model to generate responses.\n\n---\n\n## Dataset\n\nThe collection of information used during training.\n\n---\n\n## GPU\n\nA processor optimized for massive parallel computations.\n\n---\n\n## Model\n\nThe final AI produced after training.\n\n---\n\n# Interview Questions\n\n## What is AI training?\n\nAI training is the process of teaching a model using massive datasets so it can learn patterns and relationships.\n\n---\n\n## What is inference?\n\nInference is the process of using a trained model to answer questions or generate responses.\n\n---\n\n## Why don't we train Llama ourselves?\n\nTraining requires enormous computing resources, time, and money.\n\nInstead, we use an already-trained model.\n\n---\n\n## Does Ollama train AI?\n\nNo.\n\nOllama runs trained AI models.\n\n---\n\n## Why are GPUs important?\n\nBecause AI training involves billions of mathematical calculations that GPUs can perform much faster than CPUs.\n\n---\n\n# Knowledge Check\n\nWithout looking above, answer these questions.\n\n1. What is AI training?\n2. What is inference?\n3. Why doesn't Ollama train models?\n4. Why do AI companies need GPUs?\n5. What is a dataset?\n\n---\n\n# Lab\n\n## Objective\n\nUnderstand the difference between training and inference.\n\n## Activity\n\nOpen Ollama.\n\nRun:\n\n```bash\nollama run llama3.2\n```\n\nAsk:\n\n\"Who trained you?\"\n\nObserve that the model explains it was trained before you started chatting.\n\nNow ask:\n\n\"Are you learning from this conversation?\"\n\nCompare the answer with this lesson.\n\n---\n\n# Portfolio Connection\n\nMy AI Platform will never train models.\n\nInstead, it will use pre-trained models running through Ollama.\n\nThis allows me to build powerful AI applications without needing millions of dollars worth of hardware.\n\n---\n\n# Key Takeaways\n\n- Training and inference are different.\n- Ollama performs inference.\n- Models are trained only once before being distributed.\n- GPUs make AI training possible.\n- Most developers use pre-trained models instead of training their own.\n\n---\n\n# Reflection\n\n## What was the biggest thing I learned today?\n\n(Write your answer.)\n\n---\n\n## What still confuses me?\n\n(Write your answer.)\n\n---\n\n## Git Commit\n\n```bash\ngit add .\ngit commit -m \"Lesson 03 - How AI Actually Learns\"\n```",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/03-How-AI-Learns.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/04-Neural-Networks.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/05-Parameters.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/06-Tokens.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/07-Context-Window.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/08-Quantization.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/09-GGUF.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/10-Llama.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/11-Qwen.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/12-DeepSeek.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/13-Mistral.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/14-Ollama-REST-API.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/15-NodeJS-Integration.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/16-React-Integration.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/17-Streaming-Responses.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/18-Embeddings.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/19-Vector-Databases.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/20-RAG.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/21-Open-WebUI.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/22-Flowise.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/23-Docker.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/24-Linux.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/25-Deployment.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "# AI Engineering Handbook Design System\n\n---\n\n# Vision\n\nThe AI Engineering Handbook is not just another documentation website.\n\nIt is a professional learning platform that teaches AI Engineering through high-quality documentation, practical labs, projects, and interactive experiences.\n\nThe design should feel like:\n\n- Astro Documentation\n- Vercel Documentation\n- Stripe Documentation\n- GitHub Docs\n- Apple Human Interface\n\nThe design should NOT look like:\n\n- Cyberpunk\n- Neon AI\n- Matrix\n- Futuristic Robots\n- Purple glowing interfaces\n\n---\n\n# Design Philosophy\n\nOur UI should communicate:\n\n- Professional\n- Educational\n- Calm\n- Modern\n- Minimal\n- Timeless\n\nEvery screen should prioritize readability over decoration.\n\n---\n\n# Design Principles\n\n## 1. Documentation First\n\nContent is always more important than decoration.\n\nTypography should always be readable.\n\n---\n\n## 2. Consistency\n\nSpacing\n\nColors\n\nTypography\n\nRadius\n\nShadows\n\nAnimations\n\nmust remain consistent throughout the platform.\n\n---\n\n## 3. Accessibility\n\nEvery component should:\n\n- support keyboard navigation\n- have sufficient contrast\n- include focus states\n- support screen readers\n\n---\n\n## 4. Performance\n\nThe interface should feel fast.\n\nAvoid unnecessary animations.\n\nPrefer CSS transitions over JavaScript animations.\n\n---\n\n# Color Palette\n\n## Primary\n\nIndigo\n\nPurpose\n\n- Primary buttons\n- Links\n- Highlights\n\n---\n\n## Neutral\n\nSlate\n\nPurpose\n\n- Text\n- Borders\n- Backgrounds\n\n---\n\n## Success\n\nEmerald\n\nPurpose\n\n- Success states\n- Completed lessons\n\n---\n\n## Warning\n\nAmber\n\nPurpose\n\nWarnings\n\n---\n\n## Error\n\nRose\n\nPurpose\n\nErrors\n\n---\n\n# Typography\n\nPrimary Font\n\nGeist\n\nFallback\n\nInter\n\nReading Width\n\n720px\n\nMaximum Container\n\n1280px\n\n---\n\n# Spacing Scale\n\n4\n\n8\n\n12\n\n16\n\n24\n\n32\n\n40\n\n48\n\n64\n\n80\n\n96\n\nNever use random spacing values.\n\n---\n\n# Border Radius\n\nButtons\n\n12px\n\nCards\n\n16px\n\nDialogs\n\n20px\n\n---\n\n# Shadows\n\nSoft\n\nSubtle\n\nMinimal\n\nAvoid dramatic shadows.\n\n---\n\n# Icons\n\nLucide Icons\n\nConsistent stroke width.\n\nNever mix icon libraries.\n\n---\n\n# Motion\n\nFast\n\n150ms\n\nMedium\n\n200ms\n\nSlow\n\n250ms\n\nAvoid excessive animations.\n\n---\n\n# Responsive Breakpoints\n\nMobile\n\nTablet\n\nLaptop\n\nDesktop\n\nWide Screen\n\n---\n\n# Component Categories\n\n## Foundations\n\n- Colors\n- Typography\n- Shadows\n- Radius\n- Spacing\n- Grid\n\n---\n\n## Layout\n\n- Container\n- Section\n- Stack\n- Grid\n- Divider\n\n---\n\n## Navigation\n\n- Navbar\n- Sidebar\n- Footer\n- Breadcrumb\n- Table of Contents\n\n---\n\n## Documentation\n\n- Lesson Header\n- Lesson Hero\n- Markdown\n- Code Block\n- Callout\n- Definition\n- Tip\n- Warning\n- Quiz\n- Architecture Diagram\n\n---\n\n## Cards\n\n- Lesson Card\n- Project Card\n- Technology Card\n- Roadmap Card\n- Progress Card\n\n---\n\n## Generic UI\n\n- Button\n- Input\n- Badge\n- Dialog\n- Tabs\n- Accordion\n- Tooltip\n- Dropdown\n\n---\n\n## Feedback\n\n- Alert\n- Toast\n- Loading\n- Empty State\n- Error State\n\n---\n\n# Design Inspirations\n\nAstro\n\nVercel\n\nStripe\n\nGitHub\n\nLinear\n\nApple\n\n---\n\n# UI Rules\n\nAlways prioritize readability.\n\nNever add UI elements simply because they look cool.\n\nEvery component should solve a user problem.\n\nWhitespace is a feature.\n\nTypography is more important than color.\n\nConsistency beats creativity.\n\n---\n\n# Future\n\nDark Theme\n\nInteractive Labs\n\nAI Tutor\n\nSearch\n\nMarkdown Playground\n\nProgress Tracking\n\nPersonal Notes\n\nAI Chat\n\nPDF Chat\n\nRAG Search\n\nOpen Source AI Playground",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/26-Design-System.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/Glossary.md"
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "prerequisites": []
+    },
+    "content": "# AI Engineering Progress\n\n## Module 0 - Foundation\n\n- [x] Bootcamp Setup\n- [x] Git\n- [x] Project Structure\n- [x] Ollama\n\n## Module 1 - AI Fundamentals\n\n- [x] Lesson 01 - Ollama\n- [ ] Lesson 02 - Large Language Models\n- [ ] Lesson 03 - Neural Networks\n- [ ] Lesson 04 - Parameters\n- [ ] Lesson 05 - Tokens\n- [ ] Lesson 06 - Context Windows\n- [ ] Lesson 07 - Quantization\n- [ ] Lesson 08 - GGUF\n- [ ] Lesson 09 - Model Families",
+    "source": "/Users/iccantimbuhangmail.com/Documents/AI-Engineering-Bootcamp/docs/Progress.md"
+  }
+]
