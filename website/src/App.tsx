@@ -1,6 +1,7 @@
 import Container from "@/components/layout/Container";
 import Section from "@/components/layout/Section";
 import Stack from "@/components/layout/Stack";
+import Grid from "@/components/layout/Grid";
 
 function App() {
   return (
@@ -12,14 +13,26 @@ function App() {
               AI Engineering Handbook
             </h1>
 
-            <p className="max-w-2xl text-lg text-slate-600">
-              Learn Open Source AI from first principles.
+            <p className="text-lg text-slate-600">
+              Building an Open Source AI Engineering Platform.
             </p>
-
-            <button className="w-fit rounded-xl bg-indigo-600 px-6 py-3 text-white">
-              Start Learning
-            </button>
           </Stack>
+        </Section>
+
+        <Section>
+          <Grid columns={3}>
+            <div className="rounded-xl border bg-white p-6 shadow-sm">
+              Lesson 1
+            </div>
+
+            <div className="rounded-xl border bg-white p-6 shadow-sm">
+              Lesson 2
+            </div>
+
+            <div className="rounded-xl border bg-white p-6 shadow-sm">
+              Lesson 3
+            </div>
+          </Grid>
         </Section>
       </Container>
     </main>
