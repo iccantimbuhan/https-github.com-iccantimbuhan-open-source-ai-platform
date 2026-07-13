@@ -1,3 +1,41 @@
+---
+
+title: Ollama
+
+slug: ollama
+
+type: lesson
+
+order: 1
+
+module: Local AI
+
+difficulty: Beginner
+
+duration: 20 minutes
+
+description: Learn what Ollama is, why it exists, how it manages local AI models, and how applications communicate with it.
+
+tags:
+
+  - ollama
+
+  - local ai
+
+  - runtime
+
+  - llm
+
+prerequisites:
+
+  - bootcamp-roadmap
+
+next: large-language-models
+
+previous: bootcamp-roadmap
+
+---
+
 # Lesson 01 – Ollama
 
 **Status:** In Progress

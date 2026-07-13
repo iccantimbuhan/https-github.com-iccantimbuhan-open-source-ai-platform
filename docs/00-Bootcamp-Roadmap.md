@@ -1,3 +1,32 @@
+---
+
+title: AI Engineering Bootcamp
+
+slug: bootcamp-roadmap
+
+type: roadmap
+
+order: 0
+
+module: Introduction
+
+difficulty: Beginner
+
+duration: 15 minutes
+
+description: Welcome to the AI Engineering Bootcamp. Learn the roadmap, technologies, learning methodology, and the portfolio project you'll build throughout the course.
+
+tags:
+
+  - roadmap
+
+  - introduction
+
+  - ai engineering
+
+next: ollama
+
+---
 # AI Engineering Bootcamp
 
 **Author:** Ian Cantimbuhan
