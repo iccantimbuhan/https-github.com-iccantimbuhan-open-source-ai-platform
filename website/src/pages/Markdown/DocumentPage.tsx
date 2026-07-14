@@ -1,28 +1,19 @@
 import { useParams } from "react-router-dom";
 
-import SidebarLayout from "@/layouts/SidebarLayout";
+import AppLayout from "@/layouts/AppLayout";
 
 import MarkdownRenderer from "@/components/documentation/MarkdownRenderer";
 
-import {
-  getDocumentBySlug,
-  getNavigation,
-} from "@/content/content";
+import { getDocumentBySlug } from "@/content/content";
 
 export default function DocumentPage() {
   const { slug } = useParams();
 
   const document = getDocumentBySlug(slug ?? "");
 
-  const navigation = getNavigation();
-
   if (!document) {
     return (
-      <SidebarLayout
-        title="AI Engineering Handbook"
-        description="Learn AI Engineering from fundamentals to production."
-        navigation={navigation}
-      >
+      <AppLayout>
         <div className="py-24 text-center">
           <h1 className="text-4xl font-bold">
             Document Not Found
@@ -36,16 +27,12 @@ export default function DocumentPage() {
             {slug}
           </p>
         </div>
-      </SidebarLayout>
+      </AppLayout>
     );
   }
 
   return (
-    <SidebarLayout
-      title="AI Engineering Handbook"
-      description="Learn AI Engineering from fundamentals to production."
-      navigation={navigation}
-    >
+    <AppLayout>
       <article className="mx-auto max-w-4xl py-12">
         {/* Hero */}
         <header className="mb-12">
@@ -86,6 +73,6 @@ export default function DocumentPage() {
 
         <MarkdownRenderer content={document.content} />
       </article>
-    </SidebarLayout>
+    </AppLayout>
   );
 }

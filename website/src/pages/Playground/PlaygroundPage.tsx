@@ -1,37 +1,31 @@
-import SidebarLayout from "@/layouts/SidebarLayout";
-
-import { designSystemNavigation } from "@/config/navigation";
+import AppLayout from "@/layouts/AppLayout";
 
 export default function PlaygroundPage() {
   return (
-    <SidebarLayout
-      title="Playground"
-      description="Build and test reusable UI components."
-      navigation={designSystemNavigation}
-    >
-      <div className="space-y-8">
+    <AppLayout>
+      <div className="space-y-8 py-10">
         <div>
-          <h1 className="text-5xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-5xl font-bold tracking-tight">
             Playground
           </h1>
 
-          <p className="mt-4 max-w-3xl text-lg text-slate-600">
+          <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
             A dedicated environment for developing, testing, and experimenting
             with components before integrating them into the AI Engineering
             Handbook.
           </p>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
+        <div className="rounded-3xl border p-10 shadow-sm">
           <h2 className="text-2xl font-semibold">
-            Sidebar Layout Working 🎉
+            Playground Ready 🎉
           </h2>
 
-          <p className="mt-4 text-slate-600">
-            This page is now powered entirely by the reusable SidebarLayout.
+          <p className="mt-4 text-muted-foreground">
+            This page is now powered by the new AppLayout.
           </p>
         </div>
       </div>
-    </SidebarLayout>
+    </AppLayout>
   );
 }

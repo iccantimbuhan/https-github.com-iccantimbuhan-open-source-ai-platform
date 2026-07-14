@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
-import MainLayout from "@/layouts/MainLayout";
+import AppLayout from "@/layouts/AppLayout";
+
 import Container from "@/components/layout/Container";
 
 import { getAllDocuments } from "@/content/content";
@@ -9,7 +10,7 @@ export default function LessonsPage() {
   const documents = getAllDocuments();
 
   return (
-    <MainLayout>
+    <AppLayout>
       <Container>
         <div className="py-10">
           <h1 className="mb-3 text-4xl font-bold">
@@ -47,6 +48,6 @@ export default function LessonsPage() {
           </div>
         </div>
       </Container>
-    </MainLayout>
+    </AppLayout>
   );
 }

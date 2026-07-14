@@ -8,29 +8,17 @@ import {
   Wrench,
 } from "lucide-react";
 
-import { designSystemNavigation } from "./designSystem";
-
-import navigation from "@/generated/navigation.json";
-
 export const appNavigation = [
   {
-    title: "Home",
+    title: "Dashboard",
     href: "/",
     icon: Home,
   },
 
   {
-    title: "Design System",
-    href: "/design-system",
-    icon: Palette,
-    navigation: designSystemNavigation,
-  },
-
-  {
-    title: "AI Engineering",
+    title: "Handbook",
     href: "/lessons",
     icon: BookOpen,
-    navigation,
   },
 
   {
@@ -43,6 +31,12 @@ export const appNavigation = [
     title: "Projects",
     href: "/projects",
     icon: Rocket,
+  },
+
+  {
+    title: "Design System",
+    href: "/design-system",
+    icon: Palette,
   },
 
   {

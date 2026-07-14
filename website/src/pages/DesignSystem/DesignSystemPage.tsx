@@ -1,4 +1,4 @@
-import DocsLayout from "@/layouts/DocsLayout";
+import AppLayout from "@/layouts/AppLayout";
 
 import Container from "@/components/layout/Container";
 import Section from "@/components/layout/Section";
@@ -12,22 +12,23 @@ import Icons from "@/components/foundations/Icons";
 
 export default function DesignSystemPage() {
   return (
-    <DocsLayout>
+    <AppLayout>
       <Container>
         <Section>
           <div className="space-y-6">
-            <span className="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700">
+            <span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
               Foundations
             </span>
 
-            <h1 className="text-5xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-5xl font-bold tracking-tight">
               Design System
             </h1>
 
-            <p className="max-w-3xl text-lg leading-8 text-slate-600">
-              A living design system for the AI Engineering Handbook. Every
-              color, typography style, layout primitive, and reusable component
-              is documented here before being used throughout the platform.
+            <p className="max-w-3xl text-lg leading-8 text-muted-foreground">
+              A living design system for the AI Engineering Handbook.
+              Every color, typography style, layout primitive, and reusable
+              component is documented here before being used throughout the
+              platform.
             </p>
           </div>
         </Section>
@@ -68,6 +69,6 @@ export default function DesignSystemPage() {
           </div>
         </Section>
       </Container>
-    </DocsLayout>
+    </AppLayout>
   );
 }
