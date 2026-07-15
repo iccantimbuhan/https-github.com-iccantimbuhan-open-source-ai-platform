@@ -5,70 +5,72 @@ import SidebarNode from "./SidebarNode";
 import SidebarSection from "./SidebarSection";
 
 export default function SidebarNavigation() {
-  const mainItems = appNavigation.filter((item) =>
-    ["Home", "Projects", "AI Automation"].includes(item.title)
+  const portfolioItems = appNavigation.filter((item) =>
+    [
+      "Home",
+      "Projects",
+      "AI Automation",
+      "Resources",
+    ].includes(item.title)
   );
 
-  const engineeringItems = appNavigation.filter((item) =>
+  const developerItems = appNavigation.filter((item) =>
     ["Labs", "Design System"].includes(item.title)
   );
 
-  const personalItems = appNavigation.filter(
+  const aboutItem = appNavigation.find(
     (item) => item.title === "About"
   );
 
   return (
     <nav
-      className="flex-1 overflow-y-auto px-4 py-6"
+      className="flex-1 overflow-y-auto px-5 py-7"
       style={{
         scrollbarGutter: "stable",
       }}
     >
-      {/* ---------------- MAIN ---------------- */}
+      <SidebarSection title="Portfolio">
+        {portfolioItems.map((item) =>
+          item.title === "Resources" ? (
+            <SidebarNode
+              key={item.title}
+              title={item.title}
+              defaultExpanded={false}
+            >
+              <div className="space-y-5 pl-1">
+                {handbookNavigation.map((group) => (
+                  <div key={group.title}>
+                    <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                      {group.title}
+                    </h3>
 
-      <SidebarSection title="Main">
-        {mainItems.map((item) => (
-          <SidebarNode
-            key={item.title}
-            title={item.title}
-            href={item.href}
-          />
-        ))}
-      </SidebarSection>
-
-      {/* ---------------- KNOWLEDGE ---------------- */}
-
-      <SidebarSection title="Knowledge Base">
-        <SidebarNode
-          title="Resources"
-          defaultExpanded={false}
-        >
-          <div className="space-y-5 pl-1">
-            {handbookNavigation.map((group) => (
-              <div key={group.title}>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  {group.title}
-                </h3>
-
-                <div className="space-y-1 border-l border-slate-200 pl-3">
-                  {group.items.map((lesson) => (
-                    <SidebarNode
-                      key={lesson.href}
-                      title={lesson.title}
-                      href={lesson.href}
-                    />
-                  ))}
-                </div>
+                    <div className="space-y-1 border-l border-slate-200 pl-3">
+                      {group.items.map((lesson) => (
+                        <SidebarNode
+                          key={lesson.href}
+                          title={lesson.title}
+                          href={lesson.href}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </SidebarNode>
+            </SidebarNode>
+          ) : (
+            <SidebarNode
+              key={item.title}
+              title={item.title}
+              href={item.href}
+            />
+          )
+        )}
       </SidebarSection>
 
-      {/* ---------------- ENGINEERING ---------------- */}
+      <div className="my-6 border-t border-slate-200" />
 
-      <SidebarSection title="Engineering">
-        {engineeringItems.map((item) => (
+      <SidebarSection title="Developer">
+        {developerItems.map((item) => (
           <SidebarNode
             key={item.title}
             title={item.title}
@@ -77,17 +79,14 @@ export default function SidebarNavigation() {
         ))}
       </SidebarSection>
 
-      {/* ---------------- PERSONAL ---------------- */}
+      <div className="my-6 border-t border-slate-200" />
 
-      <SidebarSection title="Personal">
-        {personalItems.map((item) => (
-          <SidebarNode
-            key={item.title}
-            title={item.title}
-            href={item.href}
-          />
-        ))}
-      </SidebarSection>
+      {aboutItem && (
+        <SidebarNode
+          title={aboutItem.title}
+          href={aboutItem.href}
+        />
+      )}
     </nav>
   );
 }
