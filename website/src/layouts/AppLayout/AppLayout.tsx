@@ -12,19 +12,22 @@ export default function AppLayout({
 }: AppLayoutProps) {
   return (
     <div className="min-h-screen bg-slate-50">
-
       <AppSidebar />
 
-      <div className="ml-80 min-h-screen">
-
+      <div className="ml-80 flex min-h-screen flex-col">
         <AppHeader />
 
-        <main className="px-10 pt-24 pb-16">
+        <main
+          className="
+            flex-1
+            overflow-y-auto
+            px-10
+            py-8
+          "
+        >
           {children}
         </main>
-
       </div>
-
     </div>
   );
 }
