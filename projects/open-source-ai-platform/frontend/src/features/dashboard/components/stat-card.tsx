@@ -9,7 +9,7 @@ import {
 
 type StatCardProps = {
   title: string
-  value: string | number
+  value: string | number | ReactNode
   description?: string
   icon?: ReactNode
   className?: string
