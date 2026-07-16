@@ -36,9 +36,9 @@ export function ThinkingIndicator({ onCancel }: ThinkingIndicatorProps) {
         </div>
         {onCancel && (
           <Button
-            variant="ghost"
+            variant="destructive"
             size="sm"
-            className="h-7 gap-1 text-xs text-muted-foreground"
+            className="mt-2 h-7 gap-1 text-xs"
             onClick={onCancel}
           >
             <Square className="h-3 w-3" />

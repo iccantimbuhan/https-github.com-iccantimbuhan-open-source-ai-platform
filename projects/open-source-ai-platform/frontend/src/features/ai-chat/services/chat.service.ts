@@ -35,7 +35,7 @@ export interface ModelsResponse {
 }
 
 export async function chat(messages: BackendMessage[]): Promise<ChatResponse> {
-  const res = await api.post('/api/v1/chat', { messages })
+  const res = await api.post('/chat', { messages })
   return res.data.data as ChatResponse
 }
 
@@ -56,7 +56,7 @@ export async function streamChat(
 ): Promise<void> {
   const baseURL = api.defaults.baseURL ?? ''
   try {
-    const response = await fetch(`${baseURL}/api/v1/chat/stream`, {
+    const response = await fetch(`${baseURL}/chat/stream`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages }),
@@ -129,11 +129,11 @@ export async function streamChat(
 }
 
 export async function getHealth(): Promise<HealthResponse> {
-  const res = await api.get('/api/v1/health')
+  const res = await api.get('/health')
   return res.data.data as HealthResponse
 }
 
 export async function getModels(): Promise<ModelsResponse> {
-  const res = await api.get('/api/v1/models')
+  const res = await api.get('/models')
   return res.data.data as ModelsResponse
 }

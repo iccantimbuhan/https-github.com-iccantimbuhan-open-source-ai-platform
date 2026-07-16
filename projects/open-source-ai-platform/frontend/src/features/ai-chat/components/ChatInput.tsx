@@ -60,6 +60,7 @@ export function ChatInput({ onSend, onStop, disabled, isStreaming }: ChatInputPr
         )}
         rows={1}
         disabled={disabled}
+        autoFocus
       />
       <Button
         size="icon"

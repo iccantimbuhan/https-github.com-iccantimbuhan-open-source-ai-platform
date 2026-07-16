@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { Bot } from 'lucide-react'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { ChatMessage } from './ChatMessage'
 import { ChatInput } from './ChatInput'
@@ -21,8 +20,7 @@ const SUGGESTED_PROMPTS = [
   },
   {
     title: 'Brainstorm ideas',
-    prompt:
-      'What are some creative ways to use AI in education?',
+    prompt: 'What are some creative ways to use AI in education?',
     icon: '🧠',
   },
 ]
@@ -37,18 +35,32 @@ export function ChatWindow() {
     isSending,
     isStreaming,
   } = useAiChatStore()
+
   const conversation = conversations.find(
     (c) => c.id === activeConversationId
   )
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const viewportRef = useRef<HTMLDivElement>(null)
 
-  // Auto-scroll on new messages
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const userScrolledUp = useRef(false)
+
+  // ====================================================
+  // TEMPORARY DEBUG
+  // Auto-scroll DISABLED
+  // ====================================================
   useEffect(() => {
-    if (viewportRef.current) {
-      viewportRef.current.scrollTop = viewportRef.current.scrollHeight
-    }
-  }, [conversation?.messages.length, isSending])
+    // Disabled for debugging
+  }, [])
+
+  // Track user scroll position
+  const handleViewportScroll = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    const isNearBottom =
+      el.scrollHeight - el.scrollTop - el.clientHeight < 150
+
+    userScrolledUp.current = !isNearBottom
+  }, [])
 
   const handleSend = (content: string) => {
     if (!activeConversationId) return
@@ -79,27 +91,29 @@ export function ChatWindow() {
   const isEmpty = conversation.messages.length === 0
 
   return (
-    <div className="flex flex-1 flex-col">
-      <ScrollArea className="flex-1" ref={scrollRef}>
-        <div
-          ref={viewportRef}
-          className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-8"
-        >
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div
+        ref={scrollRef}
+        onScroll={handleViewportScroll}
+        className="flex-1 overflow-y-auto"
+      >
+        <div className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-8">
           {isEmpty ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-6 py-12 text-center">
               <div className="flex size-16 items-center justify-center rounded-2xl border-2 border-border bg-muted/50">
                 <Bot className="size-8 text-muted-foreground" />
               </div>
+
               <div className="space-y-1">
                 <h2 className="text-xl font-semibold">
                   How can I help you today?
                 </h2>
+
                 <p className="text-sm text-muted-foreground">
                   Ask me anything or try one of these suggestions.
                 </p>
               </div>
 
-              {/* Suggested prompts */}
               <div className="grid w-full max-w-lg gap-3 sm:grid-cols-3">
                 {SUGGESTED_PROMPTS.map((s) => (
                   <Button
@@ -119,13 +133,15 @@ export function ChatWindow() {
               {conversation.messages.map((msg) => (
                 <ChatMessage key={msg.id} message={msg} />
               ))}
-              {isSending && <ThinkingIndicator onCancel={cancelStream} />}
+
+              {isSending && (
+                <ThinkingIndicator onCancel={cancelStream} />
+              )}
             </>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
-      {/* Input area */}
       <div className="border-t bg-background/80 backdrop-blur-sm">
         <div className="mx-auto max-w-3xl px-4 py-4">
           <ChatInput
@@ -134,6 +150,7 @@ export function ChatWindow() {
             disabled={isSending}
             isStreaming={isStreaming}
           />
+
           <p className="mt-2 text-center text-xs text-muted-foreground/60">
             Powered by Ollama • Responses may be inaccurate
           </p>

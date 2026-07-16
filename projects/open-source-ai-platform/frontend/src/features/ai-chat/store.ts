@@ -25,6 +25,7 @@ function migrateState(state: unknown): {
   activeConversationId: string | null
   isSending: boolean
   isStreaming: boolean
+  pendingAssistantId: string | null
 } {
   if (!state || typeof state !== 'object') {
     return {
@@ -32,6 +33,7 @@ function migrateState(state: unknown): {
       activeConversationId: null,
       isSending: false,
       isStreaming: false,
+      pendingAssistantId: null,
     }
   }
 
@@ -64,6 +66,7 @@ function migrateState(state: unknown): {
           : null,
     isSending: false,
     isStreaming: false,
+    pendingAssistantId: null,
   }
 }
 
@@ -73,6 +76,7 @@ interface AiChatState {
   isSending: boolean
   isStreaming: boolean
   streamAbortController: AbortController | null
+  pendingAssistantId: string | null
 
   addConversation: () => void
   deleteConversation: (id: string) => void
@@ -99,6 +103,7 @@ export const useAiChatStore = create<AiChatState>()(
       isSending: false,
       isStreaming: false,
       streamAbortController: null,
+      pendingAssistantId: null,
 
       addConversation: () =>
         set((state) => {
@@ -276,6 +281,7 @@ export const useAiChatStore = create<AiChatState>()(
           isSending: true,
           isStreaming: true,
           streamAbortController: controller,
+          pendingAssistantId: assistantMsgId,
           conversations: state.conversations.map((c) =>
             c.id === conversationId
               ? {
@@ -295,9 +301,46 @@ export const useAiChatStore = create<AiChatState>()(
           ),
         }))
 
+        // Safety timeout: if stream doesn't complete within 5 minutes, force cleanup
+        const safetyTimeout = setTimeout(() => {
+          set((state) => {
+            // Only cleanup if still streaming this message
+            if (state.pendingAssistantId === assistantMsgId) {
+              return {
+                isSending: false,
+                isStreaming: false,
+                streamAbortController: null,
+                pendingAssistantId: null,
+                conversations: state.conversations.map((c) =>
+                  c.id === conversationId
+                    ? {
+                        ...c,
+                        messages: c.messages.map((m) =>
+                          m.id === assistantMsgId
+                            ? m.content === ''
+                              ? {
+                                  ...m,
+                                  content: 'Response timed out. Please try again.',
+                                  isError: true,
+                                }
+                              : m
+                            : m
+                        ),
+                        updatedAt: new Date(),
+                      }
+                    : c
+                ),
+              }
+            }
+            return state
+          })
+          controller.abort()
+        }, 5 * 60 * 1000)
+
         await streamChat(
           messagesPayload,
           (chunkContent, done) => {
+            clearTimeout(safetyTimeout)
             set((state) => ({
               conversations: state.conversations.map((c) =>
                 c.id === conversationId
@@ -317,14 +360,16 @@ export const useAiChatStore = create<AiChatState>()(
             }))
 
             if (done) {
-              set({ isSending: false, isStreaming: false, streamAbortController: null })
+              set({ isSending: false, isStreaming: false, streamAbortController: null, pendingAssistantId: null })
             }
           },
           (err) => {
+            clearTimeout(safetyTimeout)
             set((state) => ({
               isSending: false,
               isStreaming: false,
               streamAbortController: null,
+              pendingAssistantId: null,
               conversations: state.conversations.map((c) =>
                 c.id === conversationId
                   ? {
@@ -353,9 +398,34 @@ export const useAiChatStore = create<AiChatState>()(
       },
 
       cancelStream: () => {
-        const { streamAbortController } = get()
+        const { streamAbortController, pendingAssistantId } = get()
         if (streamAbortController) {
           streamAbortController.abort()
+        }
+        // Clean up any pending state
+        if (pendingAssistantId) {
+          set((state) => ({
+            isSending: false,
+            isStreaming: false,
+            streamAbortController: null,
+            pendingAssistantId: null,
+            conversations: state.conversations.map((c) =>
+              c.id === state.activeConversationId
+                ? {
+                    ...c,
+                    messages: c.messages.map((m) =>
+                      m.id === pendingAssistantId
+                        ? m.content === ''
+                          ? { ...m, content: '_Response cancelled._', isError: true }
+                          : m
+                        : m
+                    ),
+                    updatedAt: new Date(),
+                  }
+                : c
+            ),
+          }))
+        } else {
           set({
             isSending: false,
             isStreaming: false,
