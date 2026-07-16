@@ -10,4 +10,19 @@ export class OllamaProvider {
     const response = await this.client.get("/api/tags");
     return response.data;
   }
+
+  async chat(message: string) {
+    const response = await this.client.post("/api/chat", {
+      model: "gemma3:4b",
+      messages: [
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      stream: false,
+    });
+
+    return response.data;
+  }
 }
