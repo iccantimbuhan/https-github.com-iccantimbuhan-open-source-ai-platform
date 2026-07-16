@@ -8,6 +8,7 @@ import {
   Users,
   Monitor,
   Bell,
+  Cpu,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -74,6 +75,11 @@ export const sidebarData: SidebarData = {
           title: 'Notifications',
           url: '/settings/notifications',
           icon: Bell,
+        },
+        {
+          title: 'AI Providers',
+          url: '/settings/providers',
+          icon: Cpu,
         },
       ],
     },
