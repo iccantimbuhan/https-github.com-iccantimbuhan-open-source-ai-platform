@@ -1,0 +1,254 @@
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { toast } from 'sonner'
+import { AxiosError } from 'axios'
+import { type AiConversation, type AiMessage } from './types'
+import { chat as chatApiCall } from './services/chat.service'
+
+let idCounter = 0
+const uid = () => `ai-${++idCounter}-${Date.now()}`
+
+const generateTitle = (content: string): string => {
+  const trimmed = content.trim()
+  if (trimmed.length <= 40) return trimmed
+  return trimmed.slice(0, 40) + '...'
+}
+
+// Migration: ensure every conversation has updatedAt
+function migrateState(state: unknown): {
+  conversations: AiConversation[]
+  activeConversationId: string | null
+  isSending: boolean
+} {
+  if (!state || typeof state !== 'object') {
+    return { conversations: [], activeConversationId: null, isSending: false }
+  }
+
+  const s = state as Record<string, unknown>
+  const conversations = Array.isArray(s.conversations)
+    ? (s.conversations as Partial<AiConversation>[]).map((c) => {
+        const toDate = (v: unknown): Date =>
+          v instanceof Date ? v : new Date(String(v))
+        return {
+          id: c.id ?? uid(),
+          title: c.title ?? 'New Chat',
+          messages: (c.messages ?? []) as AiMessage[],
+          createdAt: c.createdAt ? toDate(c.createdAt) : new Date(),
+          updatedAt: c.updatedAt
+            ? toDate(c.updatedAt)
+            : (c.createdAt ? toDate(c.createdAt) : new Date()),
+        }
+      })
+    : []
+
+  return {
+    conversations,
+    activeConversationId:
+      typeof s.activeConversationId === 'string'
+        ? s.activeConversationId
+        : conversations.length > 0
+          ? conversations[0].id
+          : null,
+    isSending: false, // never persist sending state
+  }
+}
+
+interface AiChatState {
+  conversations: AiConversation[]
+  activeConversationId: string | null
+  isSending: boolean
+
+  addConversation: () => void
+  deleteConversation: (id: string) => void
+  setActiveConversation: (id: string) => void
+  addMessage: (message: Omit<AiMessage, 'id' | 'timestamp'>) => void
+  sendChat: (conversationId: string, content: string) => Promise<void>
+}
+
+const starterConversation = (): AiConversation => ({
+  id: uid(),
+  title: 'New Chat',
+  messages: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+})
+
+export const useAiChatStore = create<AiChatState>()(
+  persist(
+    (set) => ({
+      conversations: [],
+      activeConversationId: null,
+      isSending: false,
+
+      addConversation: () =>
+        set((state) => {
+          const next = starterConversation()
+          return {
+            conversations: [next, ...state.conversations],
+            activeConversationId: next.id,
+          }
+        }),
+
+      deleteConversation: (id) =>
+        set((state) => {
+          const next = state.conversations.filter((c) => c.id !== id)
+          return {
+            conversations: next,
+            activeConversationId:
+              state.activeConversationId === id
+                ? (next[0]?.id ?? null)
+                : state.activeConversationId,
+          }
+        }),
+
+      setActiveConversation: (id) => set({ activeConversationId: id }),
+
+      addMessage: ({ role, content }) =>
+        set((state) => {
+          if (!state.activeConversationId) return state
+
+          const msg: AiMessage = {
+            id: uid(),
+            role,
+            content,
+            timestamp: new Date(),
+          }
+
+          return {
+            conversations: state.conversations.map((c) =>
+              c.id === state.activeConversationId
+                ? {
+                    ...c,
+                    messages: [...c.messages, msg],
+                    title:
+                      c.title === 'New Chat' && role === 'user'
+                        ? generateTitle(content)
+                        : c.title,
+                    updatedAt: new Date(),
+                  }
+                : c
+            ),
+          }
+        }),
+
+      sendChat: async (conversationId, content) => {
+        const assistantMsgId = uid()
+
+        // Add placeholder assistant message
+        set((state) => ({
+          isSending: true,
+          conversations: state.conversations.map((c) =>
+            c.id === conversationId
+              ? {
+                  ...c,
+                  messages: [
+                    ...c.messages,
+                    {
+                      id: assistantMsgId,
+                      role: 'assistant' as const,
+                      content: '',
+                      timestamp: new Date(),
+                    },
+                  ],
+                  updatedAt: new Date(),
+                }
+              : c
+          ),
+        }))
+
+        try {
+          const result = await chatApiCall(content)
+
+          set((state) => ({
+            isSending: false,
+            conversations: state.conversations.map((c) =>
+              c.id === conversationId
+                ? {
+                    ...c,
+                    messages: c.messages.map((m) =>
+                      m.id === assistantMsgId
+                        ? { ...m, content: result.response }
+                        : m
+                    ),
+                    updatedAt: new Date(),
+                  }
+                : c
+            ),
+          }))
+        } catch (error) {
+          let errMsg = 'Failed to get a response. Please try again.'
+
+          if (error instanceof AxiosError) {
+            if (error.response?.status === 400) {
+              errMsg = error.response.data?.error || 'Invalid message.'
+            } else if (error.response?.status === 503) {
+              errMsg =
+                'AI service unavailable. Ensure Ollama is running and the backend is connected.'
+            } else if (error.response && error.response.status >= 500) {
+              errMsg = 'Internal server error. Please try again later.'
+            } else if (error.code === 'ECONNREFUSED' || !error.response) {
+              errMsg =
+                'Cannot connect to backend. Ensure the server is running.'
+            }
+          }
+
+          set((state) => ({
+            isSending: false,
+            conversations: state.conversations.map((c) =>
+              c.id === conversationId
+                ? {
+                    ...c,
+                    messages: c.messages.map((m) =>
+                      m.id === assistantMsgId
+                        ? {
+                            ...m,
+                            content: errMsg,
+                            isError: true,
+                          }
+                        : m
+                    ),
+                    updatedAt: new Date(),
+                  }
+                : c
+            ),
+          }))
+
+          toast.error('Chat Error', { description: errMsg })
+        }
+      },
+    }),
+    {
+      name: 'ai-chat-storage',
+      partialize: (state) => ({
+        conversations: state.conversations,
+        activeConversationId: state.activeConversationId,
+      }),
+      merge: (persistedState, currentState) => {
+        const migrated = migrateState(persistedState)
+        // Revive Date objects from serialized strings
+        return {
+          ...currentState,
+          ...migrated,
+          conversations: migrated.conversations.map((c) => ({
+            ...c,
+            createdAt:
+              c.createdAt instanceof Date
+                ? c.createdAt
+                : new Date(c.createdAt as unknown as string),
+            updatedAt:
+              c.updatedAt instanceof Date
+                ? c.updatedAt
+                : new Date(c.updatedAt as unknown as string),
+            messages: c.messages.map((m) => ({
+              ...m,
+              timestamp:
+                m.timestamp instanceof Date
+                  ? m.timestamp
+                  : new Date(m.timestamp as unknown as string),
+            })),
+          })),
+        }
+      },
+    }
+  )
+)

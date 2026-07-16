@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Menu, X } from 'lucide-react'
+import { Bot, Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   SidebarMenu,
@@ -11,23 +11,36 @@ import { Button } from '../ui/button'
 
 export function AppTitle() {
   const { setOpenMobile } = useSidebar()
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton
           size='lg'
-          className='gap-0 py-0 hover:bg-transparent active:bg-transparent'
+          className='gap-3 py-2 hover:bg-transparent active:bg-transparent'
           asChild
         >
           <div>
             <Link
               to='/'
               onClick={() => setOpenMobile(false)}
-              className='grid flex-1 text-start text-sm leading-tight'
+              className='flex items-center gap-3 flex-1'
             >
-              <span className='truncate font-bold'>Shadcn-Admin</span>
-              <span className='truncate text-xs'>Vite + ShadcnUI</span>
+              <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground'>
+                <Bot className='h-5 w-5' />
+              </div>
+
+              <div className='grid text-left leading-tight'>
+                <span className='truncate font-bold'>
+                  AI Engineering Platform
+                </span>
+
+                <span className='truncate text-xs text-muted-foreground'>
+                  Local AI • Ollama • Open Source
+                </span>
+              </div>
             </Link>
+
             <ToggleSidebar />
           </div>
         </SidebarMenuButton>
