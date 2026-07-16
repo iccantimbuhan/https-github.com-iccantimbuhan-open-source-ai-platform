@@ -2,6 +2,7 @@ import {
   Bot,
   LayoutDashboard,
   MessageSquare,
+  Boxes,
   Palette,
   UserCog,
   Users,
@@ -38,6 +39,11 @@ export const sidebarData: SidebarData = {
           title: 'AI Chat',
           url: '/ai-chat',
           icon: MessageSquare,
+        },
+        {
+          title: 'Models',
+          url: '/models',
+          icon: Boxes,
         },
         {
           title: 'Users',

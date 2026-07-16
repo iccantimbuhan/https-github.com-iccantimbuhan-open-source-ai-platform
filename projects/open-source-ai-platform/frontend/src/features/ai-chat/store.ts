@@ -3,7 +3,12 @@ import { persist } from 'zustand/middleware'
 import { toast } from 'sonner'
 import { AxiosError } from 'axios'
 import { type AiConversation, type AiMessage } from './types'
-import { chat as chatApiCall } from './services/chat.service'
+import {
+  chat as chatApiCall,
+  streamChat,
+  type BackendMessage,
+} from './services/chat.service'
+import { SYSTEM_PROMPT } from './config/system-prompt'
 
 let idCounter = 0
 const uid = () => `ai-${++idCounter}-${Date.now()}`
@@ -19,9 +24,15 @@ function migrateState(state: unknown): {
   conversations: AiConversation[]
   activeConversationId: string | null
   isSending: boolean
+  isStreaming: boolean
 } {
   if (!state || typeof state !== 'object') {
-    return { conversations: [], activeConversationId: null, isSending: false }
+    return {
+      conversations: [],
+      activeConversationId: null,
+      isSending: false,
+      isStreaming: false,
+    }
   }
 
   const s = state as Record<string, unknown>
@@ -36,7 +47,9 @@ function migrateState(state: unknown): {
           createdAt: c.createdAt ? toDate(c.createdAt) : new Date(),
           updatedAt: c.updatedAt
             ? toDate(c.updatedAt)
-            : (c.createdAt ? toDate(c.createdAt) : new Date()),
+            : c.createdAt
+              ? toDate(c.createdAt)
+              : new Date(),
         }
       })
     : []
@@ -49,7 +62,8 @@ function migrateState(state: unknown): {
         : conversations.length > 0
           ? conversations[0].id
           : null,
-    isSending: false, // never persist sending state
+    isSending: false,
+    isStreaming: false,
   }
 }
 
@@ -57,12 +71,16 @@ interface AiChatState {
   conversations: AiConversation[]
   activeConversationId: string | null
   isSending: boolean
+  isStreaming: boolean
+  streamAbortController: AbortController | null
 
   addConversation: () => void
   deleteConversation: (id: string) => void
   setActiveConversation: (id: string) => void
   addMessage: (message: Omit<AiMessage, 'id' | 'timestamp'>) => void
   sendChat: (conversationId: string, content: string) => Promise<void>
+  sendStreamChat: (conversationId: string, content: string) => Promise<void>
+  cancelStream: () => void
 }
 
 const starterConversation = (): AiConversation => ({
@@ -75,10 +93,12 @@ const starterConversation = (): AiConversation => ({
 
 export const useAiChatStore = create<AiChatState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       conversations: [],
       activeConversationId: null,
       isSending: false,
+      isStreaming: false,
+      streamAbortController: null,
 
       addConversation: () =>
         set((state) => {
@@ -134,7 +154,22 @@ export const useAiChatStore = create<AiChatState>()(
       sendChat: async (conversationId, content) => {
         const assistantMsgId = uid()
 
-        // Add placeholder assistant message
+        // Build messages payload from conversation history
+        const conversation = get().conversations.find(
+          (c) => c.id === conversationId
+        )
+        const historyMessages: BackendMessage[] = conversation
+          ? conversation.messages.map((m) => ({
+              role: m.role as 'user' | 'assistant',
+              content: m.content,
+            }))
+          : []
+        const messagesPayload: BackendMessage[] = [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...historyMessages,
+          { role: 'user', content },
+        ]
+
         set((state) => ({
           isSending: true,
           conversations: state.conversations.map((c) =>
@@ -157,7 +192,7 @@ export const useAiChatStore = create<AiChatState>()(
         }))
 
         try {
-          const result = await chatApiCall(content)
+          const result = await chatApiCall(messagesPayload)
 
           set((state) => ({
             isSending: false,
@@ -216,6 +251,118 @@ export const useAiChatStore = create<AiChatState>()(
           toast.error('Chat Error', { description: errMsg })
         }
       },
+
+      sendStreamChat: async (conversationId, content) => {
+        const assistantMsgId = uid()
+        const controller = new AbortController()
+
+        // Build messages payload from conversation history
+        const conversation = get().conversations.find(
+          (c) => c.id === conversationId
+        )
+        const historyMessages: BackendMessage[] = conversation
+          ? conversation.messages.map((m) => ({
+              role: m.role as 'user' | 'assistant',
+              content: m.content,
+            }))
+          : []
+        const messagesPayload: BackendMessage[] = [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...historyMessages,
+          { role: 'user', content },
+        ]
+
+        set((state) => ({
+          isSending: true,
+          isStreaming: true,
+          streamAbortController: controller,
+          conversations: state.conversations.map((c) =>
+            c.id === conversationId
+              ? {
+                  ...c,
+                  messages: [
+                    ...c.messages,
+                    {
+                      id: assistantMsgId,
+                      role: 'assistant' as const,
+                      content: '',
+                      timestamp: new Date(),
+                    },
+                  ],
+                  updatedAt: new Date(),
+                }
+              : c
+          ),
+        }))
+
+        await streamChat(
+          messagesPayload,
+          (chunkContent, done) => {
+            set((state) => ({
+              conversations: state.conversations.map((c) =>
+                c.id === conversationId
+                  ? {
+                      ...c,
+                      messages: c.messages.map((m) =>
+                        m.id === assistantMsgId
+                          ? {
+                              ...m,
+                              content: m.content + chunkContent,
+                            }
+                          : m
+                      ),
+                    }
+                  : c
+              ),
+            }))
+
+            if (done) {
+              set({ isSending: false, isStreaming: false, streamAbortController: null })
+            }
+          },
+          (err) => {
+            set((state) => ({
+              isSending: false,
+              isStreaming: false,
+              streamAbortController: null,
+              conversations: state.conversations.map((c) =>
+                c.id === conversationId
+                  ? {
+                      ...c,
+                      messages: c.messages.map((m) =>
+                        m.id === assistantMsgId
+                          ? {
+                              ...m,
+                              content: m.content || err,
+                              isError: !m.content,
+                            }
+                          : m
+                      ),
+                      updatedAt: new Date(),
+                    }
+                  : c
+              ),
+            }))
+
+            if (err !== 'Stream interrupted. Please try again.') {
+              toast.error('Stream Error', { description: err })
+            }
+          },
+          controller.signal
+        )
+      },
+
+      cancelStream: () => {
+        const { streamAbortController } = get()
+        if (streamAbortController) {
+          streamAbortController.abort()
+          set({
+            isSending: false,
+            isStreaming: false,
+            streamAbortController: null,
+          })
+        }
+      },
     }),
     {
       name: 'ai-chat-storage',
@@ -225,7 +372,6 @@ export const useAiChatStore = create<AiChatState>()(
       }),
       merge: (persistedState, currentState) => {
         const migrated = migrateState(persistedState)
-        // Revive Date objects from serialized strings
         return {
           ...currentState,
           ...migrated,

@@ -32,8 +32,10 @@ export function ChatWindow() {
     activeConversationId,
     conversations,
     addMessage,
-    sendChat,
+    sendStreamChat,
+    cancelStream,
     isSending,
+    isStreaming,
   } = useAiChatStore()
   const conversation = conversations.find(
     (c) => c.id === activeConversationId
@@ -51,7 +53,7 @@ export function ChatWindow() {
   const handleSend = (content: string) => {
     if (!activeConversationId) return
     addMessage({ role: 'user', content })
-    sendChat(activeConversationId, content)
+    sendStreamChat(activeConversationId, content)
   }
 
   const handleSuggestedPrompt = (prompt: string) => {
@@ -117,7 +119,7 @@ export function ChatWindow() {
               {conversation.messages.map((msg) => (
                 <ChatMessage key={msg.id} message={msg} />
               ))}
-              {isSending && <ThinkingIndicator />}
+              {isSending && <ThinkingIndicator onCancel={cancelStream} />}
             </>
           )}
         </div>
@@ -126,7 +128,12 @@ export function ChatWindow() {
       {/* Input area */}
       <div className="border-t bg-background/80 backdrop-blur-sm">
         <div className="mx-auto max-w-3xl px-4 py-4">
-          <ChatInput onSend={handleSend} disabled={isSending} />
+          <ChatInput
+            onSend={handleSend}
+            onStop={cancelStream}
+            disabled={isSending}
+            isStreaming={isStreaming}
+          />
           <p className="mt-2 text-center text-xs text-muted-foreground/60">
             Powered by Ollama • Responses may be inaccurate
           </p>

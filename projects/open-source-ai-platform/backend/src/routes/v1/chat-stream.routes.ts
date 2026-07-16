@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { ChatStreamController } from "../../controllers/chat-stream.controller.js";
+import { ChatController } from "../../controllers/chat.controller.js";
 
 const router = Router();
 
-router.post("/", ChatStreamController.stream);
+router.post("/", ChatController.stream);
 
 export default router;

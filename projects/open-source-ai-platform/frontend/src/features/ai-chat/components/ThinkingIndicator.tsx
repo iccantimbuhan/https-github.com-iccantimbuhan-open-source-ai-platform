@@ -1,6 +1,11 @@
-import { Bot } from 'lucide-react'
+import { Bot, Square } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
-export function ThinkingIndicator() {
+type ThinkingIndicatorProps = {
+  onCancel?: () => void
+}
+
+export function ThinkingIndicator({ onCancel }: ThinkingIndicatorProps) {
   return (
     <div className="group flex gap-3">
       {/* Avatar */}
@@ -29,6 +34,17 @@ export function ThinkingIndicator() {
             </span>
           </div>
         </div>
+        {onCancel && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 gap-1 text-xs text-muted-foreground"
+            onClick={onCancel}
+          >
+            <Square className="h-3 w-3" />
+            Stop
+          </Button>
+        )}
       </div>
     </div>
   )

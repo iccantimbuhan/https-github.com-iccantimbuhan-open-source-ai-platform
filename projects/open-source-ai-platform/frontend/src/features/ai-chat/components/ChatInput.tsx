@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowUp } from 'lucide-react'
+import { ArrowUp, Square } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
 type ChatInputProps = {
   onSend: (content: string) => void
+  onStop?: () => void
   disabled?: boolean
+  isStreaming?: boolean
 }
 
-export function ChatInput({ onSend, disabled }: ChatInputProps) {
+export function ChatInput({ onSend, onStop, disabled, isStreaming }: ChatInputProps) {
   const [value, setValue] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -61,11 +63,12 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
       />
       <Button
         size="icon"
-        onClick={handleSubmit}
-        disabled={!value.trim() || disabled}
+        onClick={isStreaming ? onStop : handleSubmit}
+        disabled={!isStreaming && (!value.trim() || disabled)}
         className="mb-0.5 shrink-0 rounded-lg"
+        variant={isStreaming ? 'destructive' : 'default'}
       >
-        <ArrowUp size={18} />
+        {isStreaming ? <Square size={16} /> : <ArrowUp size={18} />}
       </Button>
     </div>
   )

@@ -1,5 +1,10 @@
 import type { AxiosResponse } from "axios";
 
+export interface OllamaMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
 export interface ChatResponse {
   model: string;
   response: string;
@@ -18,9 +23,9 @@ export interface AIModel {
 export interface AIProvider {
   listModels(): Promise<any>;
 
-  chat(message: string): Promise<ChatResponse>;
+  chat(messages: OllamaMessage[]): Promise<ChatResponse>;
 
   streamChat?(
-    message: string
+    messages: OllamaMessage[]
   ): Promise<AxiosResponse<any>>;
 }
