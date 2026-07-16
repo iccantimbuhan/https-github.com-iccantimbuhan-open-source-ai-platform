@@ -13,7 +13,7 @@ export class OllamaProvider {
 
   async chat(message: string) {
     const response = await this.client.post("/api/chat", {
-      model: "gemma3:4b",
+      model: env.ollamaModel,
       messages: [
         {
           role: "user",

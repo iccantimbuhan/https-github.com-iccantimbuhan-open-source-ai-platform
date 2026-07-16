@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { ModelService } from "../services/model.service.js";
+import { ApiResponse } from "../utils/api-response.js";
 
 export class ModelController {
   static async getModels(_req: Request, res: Response) {
@@ -7,10 +8,9 @@ export class ModelController {
 
     const models = await service.getModels();
 
-    res.json({
-      success: true,
+    return ApiResponse.success(res, {
       count: models.length,
-      data: models,
+      models,
     });
   }
 }
